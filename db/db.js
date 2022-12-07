@@ -32,8 +32,10 @@ function querySelect(sql, callback) {
         try {
           // 消除RowDataPacket方法 https://blog.csdn.net/yihanzhi/article/details/79455790
           // JSON字符串互转即可消除
-          result = JSON.stringify(result)
-          result = JSON.parse(result)
+          if (typeof result != 'undefined') {
+            result = JSON.stringify(result)
+            result = JSON.parse(result)
+          }
           // 回传
           callback(err, result)
           // 释放连接
@@ -72,8 +74,10 @@ function queryInsert(sql, callback) {
         try {
           // 消除RowDataPacket方法 https://blog.csdn.net/yihanzhi/article/details/79455790
           // JSON字符串互转即可消除
-          result = JSON.stringify(result)
-          result = JSON.parse(result)
+          if (typeof result != 'undefined') {
+            result = JSON.stringify(result)
+            result = JSON.parse(result)
+          }
           // 回传
           callback(err, result)
           // 释放连接
@@ -112,8 +116,10 @@ function queryUpdate(sql, callback) {
         try {
           // 消除RowDataPacket方法 https://blog.csdn.net/yihanzhi/article/details/79455790
           // JSON字符串互转即可消除
-          result = JSON.stringify(result)
-          result = JSON.parse(result)
+          if (typeof result != 'undefined') {
+            result = JSON.stringify(result)
+            result = JSON.parse(result)
+          }
           // 回传
           callback(err, result)
           // 释放连接
@@ -148,8 +154,10 @@ function queryDelete(sql, callback) {
         try {
           // 消除RowDataPacket方法 https://blog.csdn.net/yihanzhi/article/details/79455790
           // JSON字符串互转即可消除
-          result = JSON.stringify(result)
-          result = JSON.parse(result)
+          if (typeof result != 'undefined') {
+            result = JSON.stringify(result)
+            result = JSON.parse(result)
+          }
           // 回传
           callback(err, result)
           // 释放连接

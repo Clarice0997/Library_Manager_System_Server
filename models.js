@@ -22,9 +22,11 @@ function loginUser(username, password, callback) {
           code: 412,
           message: '查询数据库出错'
         })
+        return
       }
       // 判断密码是否相同
       if (data.length != 0 && bcrypt.compareSync(password, data[0].password)) {
+        // jwt数字签名
         let token = jwt.sign(
           {
             uname: String(data[0].username)
@@ -36,16 +38,19 @@ function loginUser(username, password, callback) {
           message: '登录成功',
           token
         })
+        return
       } else if (data.length == 0) {
         callback({
           code: 412,
           message: '用户不存在'
         })
+        return
       } else {
         callback({
           code: 412,
           message: '密码出错'
         })
+        return
       }
     })
   } else {
@@ -54,6 +59,7 @@ function loginUser(username, password, callback) {
       code: 412,
       message: '账号密码不为空'
     })
+    return
   }
 }
 
@@ -71,11 +77,12 @@ function registerUser(username, password, callback) {
           code: 412,
           message: '查询用户名出错'
         })
+        return
       }
       // 根据返回值判断用户名是否存在
       if (data.length == 0) {
         // 用户名不存在 执行注册操作
-        queryInsert(`insert into users(username,password) values ('${username}','${bcrypt.hashSync(password, 10)}')`, (err, data) => {
+        queryInsert(`insert into users(uid,username,password) values (null,'${username}','${bcrypt.hashSync(password, 10)}')`, (err, data) => {
           // 判断注册是否出错
           if (err != null) {
             console.log('注册出错:' + err)
@@ -84,12 +91,14 @@ function registerUser(username, password, callback) {
               code: 412,
               message: '注册出错'
             })
+            return
           }
           // 返回注册成功消息
           callback({
             code: 200,
             message: '注册成功'
           })
+          return
         })
       } else {
         // 用户名已存在 返回错误信息
@@ -97,6 +106,7 @@ function registerUser(username, password, callback) {
           code: 409,
           message: '用户已存在'
         })
+        return
       }
     })
   } else {
@@ -105,6 +115,7 @@ function registerUser(username, password, callback) {
       code: 412,
       message: '账号密码不为空'
     })
+    return
   }
 }
 
@@ -124,6 +135,7 @@ function getUserProfile(rawToken, callback) {
           code: 412,
           message: '查询数据库出错'
         })
+        return
       }
       // 查询成功返回个人信息
       if (data.length != 0) {
@@ -133,11 +145,13 @@ function getUserProfile(rawToken, callback) {
           gender: data[0].gender,
           age: data[0].age
         })
+        return
       } else {
         callback({
           code: 412,
           message: '用户不存在'
         })
+        return
       }
     })
   } else {
@@ -145,6 +159,7 @@ function getUserProfile(rawToken, callback) {
       code: 500,
       message: '身份验证失败'
     })
+    return
   }
 }
 
