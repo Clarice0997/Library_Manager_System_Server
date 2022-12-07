@@ -9,6 +9,9 @@ app.use(express.json())
 const cors = require('cors')
 app.use(cors())
 
+// 导入路径处理模块
+const path = require('path')
+
 // 导入环境变量
 const dotenv = require('dotenv')
 dotenv.config('../.env')
@@ -28,6 +31,9 @@ app.get('/apis', (req, res) => {
 
 // 创建路由
 app.use('/apis/user', require('./routes/user'))
+
+// 接口文档
+app.use(express.static(path.join(__dirname, 'public')))
 
 // 配置端口 启动监听服务端
 const PORT = process.env.PORT || 3001

@@ -19,6 +19,14 @@
     "passport-jwt": "^4.0.0"
   },
   "devDependencies": {
+    "apidoc": "^0.53.1",
     "nodemon": "^2.0.20"
+  },
+  "apidoc": {
+    "name": "图书馆管理系统接口文档",
+    "version": "0.1.0",
+    "description": "图书馆管理系统接口文档",
+    "title": "图书馆管理系统接口文档",
+    "url": "http://localhost:3000/apis"
   }
 }

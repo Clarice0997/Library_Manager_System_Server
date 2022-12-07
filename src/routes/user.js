@@ -10,7 +10,24 @@ const { loginUser, registerUser, getUserProfile } = require('../model/userModel'
 // 导入自定义校验中间件
 const auth = require('../utils/auth')
 
-// 登录接口
+/**
+ * @api {post} /user/login 用户登录
+ * @apiDescription 用户登录
+ * @apiName login
+ * @apiGroup auth
+ * @apiParam {string} username 用户名
+ * @apiParam {string} password 密码
+ * @apiSuccess {json} result
+ * @apiSuccessExample {json} Success-Response:
+ *  {
+ *      "data": {
+ *          "code": 200,
+ *          "message": "登录成功"
+ *      },
+ *      "token": token
+ *  }
+ * @apiVersion 0.1.0
+ */
 router.post('/login', async (req, res) => {
   let body = req.body.data || req.body
   // 执行登录函数 返回结果
@@ -28,7 +45,24 @@ router.post('/login', async (req, res) => {
   })
 })
 
-// 注册接口
+/**
+ * @api {post} /user/register 用户注册
+ * @apiDescription 用户注册
+ * @apiName register
+ * @apiGroup auth
+ * @apiParam {string} username 用户名
+ * @apiParam {string} password 密码
+ * @apiParam {string} nickname 昵称
+ * @apiSuccess {json} result
+ * @apiSuccessExample {json} Success-Response:
+ *  {
+ *      "result": {
+ *          "code": 200,
+ *          "message": "注册成功"
+ *      }
+ *  }
+ * @apiVersion 0.1.0
+ */
 router.post('/register', async (req, res) => {
   let body = req.body.data || req.body
   // 执行注册函数 返回结果
