@@ -32,7 +32,7 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
   let body = req.body.data || req.body
   // 执行注册函数 返回结果
-  registerUser(body.username, body.password, result => {
+  registerUser(body.username, body.password, body.nickname, result => {
     console.log(result)
     res.status(result.code).send({
       result

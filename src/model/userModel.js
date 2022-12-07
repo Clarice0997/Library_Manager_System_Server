@@ -67,7 +67,7 @@ function loginUser(username, password, callback) {
 }
 
 // 注册用户函数
-function registerUser(username, password, callback) {
+function registerUser(username, password, nickname, callback) {
   // 判断传入值是否合法 非空校验
   if (username != null && password != null) {
     // 判断用户名是否存在 查询用户名
@@ -84,24 +84,57 @@ function registerUser(username, password, callback) {
       }
       // 根据返回值判断用户名是否存在
       if (data.length == 0) {
-        // 用户名不存在 执行注册操作
-        queryInsert(`insert into users(uid,username,password) values (null,'${username}','${bcrypt.hashSync(password, 10)}')`, (err, data) => {
-          // 判断注册是否出错
+        querySelect(`select nickname from users_detail where nickname = '${nickname}'`, (err, data) => {
+          // 判断查询是否出错
           if (err != null) {
-            console.log('注册出错:' + err)
+            console.log('数据库查询昵称出错:' + err)
             // 返回错误信息
             callback({
               code: 412,
-              message: '注册出错'
+              message: '查询昵称出错'
             })
             return
           }
-          // 返回注册成功消息
-          callback({
-            code: 200,
-            message: '注册成功'
+          if (data.length != 0) {
+            // 返回错误信息
+            callback({
+              code: 412,
+              message: '昵称已被注册'
+            })
+            return
+          }
+          // 用户名不存在 执行注册操作
+          queryInsert(`insert into users(uid,username,password) values (null,'${username}','${bcrypt.hashSync(password, 10)}')`, async (err, data) => {
+            // 判断注册是否出错
+            if (err != null) {
+              console.log('注册出错:' + err)
+              // 返回错误信息
+              callback({
+                code: 412,
+                message: '注册出错：插入用户出错'
+              })
+              return
+            }
+            // 向用户详细页插入昵称
+            await queryUpdate(`update users_detail set nickname = '${nickname}' where uid = ${data.insertId}`, (err, data) => {
+              // 判断插入昵称是否出错
+              if (err != null) {
+                console.log('注册出错:' + err)
+                // 返回错误信息
+                callback({
+                  code: 412,
+                  message: '注册出错：' + err
+                })
+                return
+              }
+              // 返回注册成功消息
+              callback({
+                code: 200,
+                message: '注册成功'
+              })
+              return
+            })
           })
-          return
         })
       } else {
         // 用户名已存在 返回错误信息
