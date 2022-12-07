@@ -3,7 +3,7 @@ var dbConfig = {}
 
 // 导入环境变量
 const dotenv = require('dotenv')
-dotenv.config('../.env')
+dotenv.config('../../.env')
 
 // 为数据库连接对象赋值
 dbConfig = {

@@ -1,9 +1,12 @@
 // 导入封装MySQL API
-const { querySelect, queryInsert, queryUpdate, queryDelete } = require('./db/db.js')
+const { querySelect, queryInsert, queryUpdate, queryDelete } = require('../db/db.js')
+
 // 导入bcrypt加密算法
 const bcrypt = require('bcrypt')
+
 // 引入jwt模块
 const jwt = require('jsonwebtoken')
+
 // 导入环境变量
 const dotenv = require('dotenv')
 dotenv.config('./.env')
@@ -126,7 +129,7 @@ function getUserProfile(rawToken, callback) {
   // 校验信息有效性
   if (uname) {
     // 查询数据库中用户个人信息
-    querySelect(`select username,gender,age from users where username = '${uname}'`, (err, data) => {
+    querySelect(`select * from users where username = '${uname}'`, (err, data) => {
       // 判断查询是否出错
       if (err != null) {
         console.log('数据库查询出错:' + err)
@@ -141,9 +144,7 @@ function getUserProfile(rawToken, callback) {
       if (data.length != 0) {
         callback({
           code: 200,
-          username: data[0].username,
-          gender: data[0].gender,
-          age: data[0].age
+          data
         })
         return
       } else {
