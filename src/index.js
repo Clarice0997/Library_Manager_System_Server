@@ -31,6 +31,7 @@ app.get('/apis', (req, res) => {
 
 // 创建路由
 app.use('/apis/user', require('./routes/user'))
+app.use('/apis/userManager', require('./routes/userManager'))
 
 // 接口文档
 app.use(express.static(path.join(__dirname, 'public')))

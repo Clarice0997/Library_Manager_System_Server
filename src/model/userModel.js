@@ -4,8 +4,8 @@ const { querySelect, queryInsert, queryUpdate, queryDelete } = require('../db/db
 // 导入bcrypt加密算法
 const bcrypt = require('bcrypt')
 
-// 引入jwt模块
-const jwt = require('jsonwebtoken')
+// 引入token模块
+const { setToken, decryptToken } = require('../utils/token')
 
 // 导入环境变量
 const dotenv = require('dotenv')
@@ -16,7 +16,7 @@ function loginUser(username, password, callback) {
   // 判断传入值是否合法 非空校验
   if (username != null && password != null) {
     // 查询数据库账号密码
-    querySelect(`select username,password from users where username ='${username}'`, (err, data) => {
+    querySelect(`select uid,username,password from users where username ='${username}'`, (err, data) => {
       // 判断查询是否出错
       if (err != null) {
         console.log('数据库查询出错:' + err)
@@ -30,12 +30,7 @@ function loginUser(username, password, callback) {
       // 判断密码是否相同
       if (data.length != 0 && bcrypt.compareSync(password, data[0].password)) {
         // jwt数字签名
-        let token = jwt.sign(
-          {
-            uname: String(data[0].username)
-          },
-          process.env.SECRET
-        )
+        let token = setToken(data[0].uid, String(data[0].username))
         callback({
           code: 200,
           message: '登录成功',
@@ -158,11 +153,11 @@ function registerUser(username, password, nickname, callback) {
 // 获取用户个人信息函数
 function getUserProfile(rawToken, callback) {
   // 解密
-  const { uname } = jwt.verify(rawToken, process.env.SECRET)
+  const { uid, uname } = decryptToken(rawToken)
   // 校验信息有效性
-  if (uname) {
+  if (uname && uid) {
     // 查询数据库中用户个人信息
-    querySelect(`select * from users where username = '${uname}'`, (err, data) => {
+    querySelect(`select * from users where uid = '${uid}'`, (err, data) => {
       // 判断查询是否出错
       if (err != null) {
         console.log('数据库查询出错:' + err)
