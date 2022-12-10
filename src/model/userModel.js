@@ -11,7 +11,13 @@ const { setToken, decryptToken } = require('../utils/token')
 const dotenv = require('dotenv')
 dotenv.config('./.env')
 
-// 登录用户函数
+/**
+ * 登录用户函数
+ * @param {*} username 账号
+ * @param {*} password 密码
+ * @param {*} callback 回调函数
+ * @returns
+ */
 function loginUser(username, password, callback) {
   // 判断传入值是否合法 非空校验
   if (username != null && password != null) {
@@ -61,7 +67,14 @@ function loginUser(username, password, callback) {
   }
 }
 
-// 注册用户函数
+/**
+ * 注册用户函数
+ * @param {*} username 账号
+ * @param {*} password 密码
+ * @param {*} nickname 昵称
+ * @param {*} callback 回调函数
+ * @returns
+ */
 function registerUser(username, password, nickname, callback) {
   // 判断传入值是否合法 非空校验
   if (username != null && password != null) {

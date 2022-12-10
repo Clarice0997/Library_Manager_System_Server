@@ -11,7 +11,7 @@ const { loginUser, registerUser, getUserProfile } = require('../model/userModel'
 const auth = require('../utils/auth')
 
 /**
- * @api {post} /user/login 用户登录
+ * @api {post} /apis/user/login 用户登录
  * @apiDescription 用户登录
  * @apiName login
  * @apiGroup auth
@@ -46,7 +46,7 @@ router.post('/login', async (req, res) => {
 })
 
 /**
- * @api {post} /user/register 用户注册
+ * @api {post} /apis/user/register 用户注册
  * @apiDescription 用户注册
  * @apiName register
  * @apiGroup auth
