@@ -31,18 +31,25 @@ const auth = require('../utils/auth')
 router.post('/login', async (req, res) => {
   let body = req.body.data || req.body
   // 执行登录函数 返回结果
-  loginUser(body.username, body.password, result => {
-    console.log(result)
-    let data = {
-      code: result.code,
-      message: result.message
-    }
-    // 返回数据和token
-    res.status(result.code).send({
-      data,
-      token: result.token
+  try {
+    loginUser(body.username, body.password, result => {
+      console.log(result)
+      // 返回数据和token
+      res.status(result.code).send({
+        data: {
+          code: result.code,
+          message: result.message
+        },
+        token: result.token
+      })
     })
-  })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({
+      code: 500,
+      message: '请求错误'
+    })
+  }
 })
 
 /**
@@ -66,21 +73,35 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
   let body = req.body.data || req.body
   // 执行注册函数 返回结果
-  registerUser(body.username, body.password, body.nickname, result => {
-    console.log(result)
-    res.status(result.code).send({
-      result
+  try {
+    registerUser(body.username, body.password, body.nickname, result => {
+      console.log(result)
+      res.status(result.code).send(result)
     })
-  })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({
+      code: 500,
+      message: '请求错误'
+    })
+  }
 })
 
 // 获取用户信息接口
 router.get('/profile', auth, async (req, res) => {
   // 查询用户信息函数
-  getUserProfile(req.rawToken, result => {
-    console.log(result)
-    res.status(result.code).send(result)
-  })
+  try {
+    getUserProfile(req.rawToken, result => {
+      console.log(result)
+      res.status(result.code).send(result)
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({
+      code: 500,
+      message: '请求错误'
+    })
+  }
 })
 
 module.exports = router

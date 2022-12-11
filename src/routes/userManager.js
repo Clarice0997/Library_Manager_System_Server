@@ -31,12 +31,20 @@ router.get('/getInfo', auth, async (req, res) => {
   // 解构赋值查询字段
   let { pageNumber, pageSize } = req.query
   // 执行获取用户信息函数
-  getUsersInfo(pageNumber, pageSize, result => {
-    console.log(result)
-    res.status(result.code).send({
-      result
+  try {
+    getUsersInfo(pageNumber, pageSize, result => {
+      console.log(result)
+      res.status(result.code).send({
+        result
+      })
     })
-  })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({
+      code: 500,
+      message: '请求错误'
+    })
+  }
 })
 
 module.exports = router
