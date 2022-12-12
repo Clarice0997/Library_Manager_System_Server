@@ -7,6 +7,8 @@ const bcrypt = require('bcrypt')
 // 引入token模块
 const { decryptToken, verifyToken } = require('../utils/token')
 
+const { formatDate } = require('../utils/formatDate')
+
 // 导入环境变量
 const dotenv = require('dotenv')
 dotenv.config('./.env')
@@ -40,6 +42,7 @@ function getUsersInfo(pageNumber, pageSize, callback) {
     }
     console.log(data)
     if (data.length != 0) {
+      console.log(formatDate(new Date('2022-12-10T15:52:55.000Z'), 'yyyy年MM月dd日 hh时mm分'))
       callback({
         code: 200,
         data
