@@ -33,7 +33,6 @@ router.get('/getInfo', auth, async (req, res) => {
   // 执行获取用户信息函数
   try {
     getUsersInfo(pageNumber, pageSize, result => {
-      console.log(result)
       res.status(result.code).send({
         result
       })

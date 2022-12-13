@@ -40,9 +40,10 @@ function getUsersInfo(pageNumber, pageSize, callback) {
       })
       return
     }
-    console.log(data)
     if (data.length != 0) {
-      console.log(formatDate(new Date('2022-12-10T15:52:55.000Z'), 'yyyy年MM月dd日 hh时mm分'))
+      data.forEach(res => {
+        res.create_time = formatDate(new Date(res.create_time), 'yyyy年MM月dd日 hh时mm分')
+      })
       callback({
         code: 200,
         data
