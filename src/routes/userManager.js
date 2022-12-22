@@ -8,7 +8,7 @@ const router = express.Router()
 const auth = require('../utils/auth')
 
 // import
-const { getUsersInfo } = require('../model/userManagerModel')
+const { getUsersInfo, searchUser } = require('../model/userManagerModel')
 
 /**
  * @api {get} /apis/userManager/getInfo 获取用户信息
@@ -37,6 +37,33 @@ router.get('/getInfo', auth, async (req, res) => {
         result
       })
     })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({
+      code: 500,
+      message: '请求错误'
+    })
+  }
+})
+
+router.get('/searchUser', auth, async (req, res) => {
+  // 解构赋值查询字段
+  let { uid, nickname, pageNumber, pageSize } = req.query
+  // 执行获取用户信息函数
+  try {
+    if (uid || nickname) {
+      searchUser(uid, nickname, pageNumber, pageSize, result => {
+        res.status(result.code).send({
+          result
+        })
+      })
+    } else {
+      getUsersInfo(pageNumber, pageSize, result => {
+        res.status(result.code).send({
+          result
+        })
+      })
+    }
   } catch (error) {
     console.log(error)
     res.status(500).send({
