@@ -53,12 +53,12 @@ router.get('/searchUser', auth, async (req, res) => {
   try {
     if (uid || nickname) {
       searchUser(uid, nickname, pageNumber, pageSize, result => {
-        res.status(result.code).send({
+        res.status(200).send({
           result
         })
       })
     } else {
-      getUsersInfo(pageNumber, pageSize, result => {
+      getUsersInfo(pageNumber, page改Size, result => {
         res.status(result.code).send({
           result
         })
