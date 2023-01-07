@@ -22,11 +22,11 @@ dotenv.config('./.env')
  */
 function getUsersInfo(pageNumber, pageSize, callback) {
   // 判断是否存在页码
-  if (!pageNumber) {
+  if (typeof pageNumber == 'undefined') {
     pageNumber = 1
   }
   // 判断是否存在页面条数限制
-  if (!pageSize) {
+  if (typeof pageSize == 'undefined') {
     pageSize = 10
   }
   querySelect(`select d.* from users u left join users_detail d on u.uid=d.uid where role = 1 limit ${pageNumber - 1},${pageSize}`, (err, data) => {
@@ -66,6 +66,14 @@ function getUsersInfo(pageNumber, pageSize, callback) {
  * @param {*} callback 回调函数
  */
 function searchUser(uid, nickname, pageNumber, pageSize, callback) {
+  // 判断是否存在页码
+  if (typeof pageNumber == 'undefined') {
+    pageNumber = 1
+  }
+  // 判断是否存在页面条数限制
+  if (typeof pageSize == 'undefined') {
+    pageSize = 10
+  }
   querySelect(`select d.* from users u left join users_detail d on u.uid = d.uid where role = 1 ${uid && nickname ? `and d.uid = ${uid} and d.nickname like '%${nickname}%'` : uid ? `and d.uid = ${uid}` : `and d.nickname like '%${nickname}%'`} limit ${pageNumber - 1},${pageSize}`, (err, data) => {
     // 判断查询是否出错
     if (err != null) {

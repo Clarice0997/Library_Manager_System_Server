@@ -46,6 +46,7 @@ router.get('/getInfo', auth, async (req, res) => {
   }
 })
 
+// 搜索用户信息
 router.get('/searchUser', auth, async (req, res) => {
   // 解构赋值查询字段
   let { uid, nickname, pageNumber, pageSize } = req.query
@@ -58,7 +59,7 @@ router.get('/searchUser', auth, async (req, res) => {
         })
       })
     } else {
-      getUsersInfo(pageNumber, page改Size, result => {
+      getUsersInfo(pageNumber, pageSize, result => {
         res.status(result.code).send({
           result
         })
